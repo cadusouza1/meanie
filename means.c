@@ -5,10 +5,10 @@ float arithmetic_mean(float nums[], int len) {
     int i;
 
     for (i = 0; i < len; i++) {
-        sum += nums[i];
+        sum += nums[i] / len;
     }
 
-    return sum / len;
+    return sum;
 }
 
 float geometric_mean(float nums[], int len) {
@@ -16,8 +16,8 @@ float geometric_mean(float nums[], int len) {
     int i;
 
     for (i = 0; i < len; i++) {
-        prod *= nums[i];
+        prod *= pow(nums[i], 1.0 / len);
     }
 
-    return pow(prod, 1.0 / len);
+    return prod;
 }
