@@ -31,6 +31,8 @@ int main(int argc, char *argv[]) {
 
         printf("%f ", arithmetic_mean(nums, nums_len));
         printf("%f ", geometric_mean(nums, nums_len));
+        printf("%f ", harmonic_mean(nums, nums_len));
+        printf("%f ", weighted_arithmetic_mean(nums, nums_len));
         printf("\n");
 
         free(line);
