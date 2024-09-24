@@ -74,27 +74,11 @@ By default, **Meanie** outputs the calculated means in the following order:
 
 1. **Arithmetic Mean**
 2. **Geometric Mean**
-3. *(More means will be added here in future updates)*
+3. **Harmonic Mean**
+4. **Weighted Arithmetic Mean**
+5. *(More means will be added here in future updates)*
 
 Each line of output corresponds to the means of the numbers on the respective input line, printed in the order specified above.
-
-### Example Output
-
-Given the input:
-
-```
-57 88 12 26 36 55 30 21 59 79
-67 86 28 18 56 48 26 51 21 19
-```
-
-**Meanie** will output:
-
-```
-46.299999 39.436623
-42.000000 36.441391
-```
-
-As more means are implemented, they will appear in this output sequence.
 
 ## Command-Line Options (Planned)
 
