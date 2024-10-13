@@ -1,5 +1,9 @@
 #include <math.h>
 
+#define MEANS_SIZE 4
+
+typedef float (*MeanFunc)(float nums[], int len);
+
 float arithmetic_mean(float nums[], int len) {
     float sum = 0;
     int i;

@@ -11,40 +11,43 @@
 int main(int argc, char *argv[]) {
     Line *line;
 
+    MeanFunc means[MEANS_SIZE];
+    int means_count = 0;
+
     float nums[NUMS_MAX_LEN];
     int nums_len;
     char *raw_num;
     float parsed_num;
 
     int opt;
-    int show_all = 0;
-    int show_arithmetic = 0;
-    int show_geometric = 0;
-    int show_harmonic = 0;
-    int show_weighted_average = 0;
+    int i;
 
-    if (argc < 2) {
-        show_all = 1;
-    } else {
-        while ((opt = getopt(argc, argv, "aghw")) != -1) {
-            switch (opt) {
-            case 'a':
-                show_arithmetic = 1;
-                break;
-            case 'g':
-                show_geometric = 1;
-                break;
-            case 'h':
-                show_harmonic = 1;
-                break;
-            case 'w':
-                show_weighted_average = 1;
-                break;
-            default:
-                fprintf(stderr, "Unknown option: %c\n", opt);
-                return 1;
-            }
+    while ((opt = getopt(argc, argv, "aghw")) != -1) {
+        switch (opt) {
+        case 'a':
+            means[means_count++] = &arithmetic_mean;
+            break;
+        case 'g':
+            means[means_count++] = &geometric_mean;
+            break;
+        case 'h':
+            means[means_count++] = &harmonic_mean;
+            break;
+        case 'w':
+            means[means_count++] = &weighted_arithmetic_mean;
+            break;
+        default:
+            fprintf(stderr, "Unknown option: %c\n", opt);
+            return 1;
         }
+    }
+
+    // If there were no args passed, show all the means
+    if (means_count == 0) {
+        means[means_count++] = &arithmetic_mean;
+        means[means_count++] = &geometric_mean;
+        means[means_count++] = &harmonic_mean;
+        means[means_count++] = &weighted_arithmetic_mean;
     }
 
     while ((line = read_line(stdin, LINE_CHUNK_SIZE))) {
@@ -61,24 +64,11 @@ int main(int argc, char *argv[]) {
             nums_len++;
         }
 
-        if (show_arithmetic || show_all) {
-            printf("%f ", arithmetic_mean(nums, nums_len));
-        }
-
-        if (show_geometric || show_all) {
-            printf("%f ", geometric_mean(nums, nums_len));
-        }
-
-        if (show_harmonic || show_all) {
-            printf("%f ", harmonic_mean(nums, nums_len));
-        }
-
-        if (show_weighted_average || show_all) {
-            printf("%f", weighted_arithmetic_mean(nums, nums_len));
+        for (i = 0; i < means_count; i++) {
+            printf("%f ", means[i](nums, nums_len));
         }
 
         printf("\n");
-
         free(line);
     }
 
