@@ -11,7 +11,6 @@
 ## Features
 
 - Calculates common means
-- Processes multiple lines of input
 - Lightweight and easy to use
 
 ### Upcoming Features
@@ -23,7 +22,7 @@
 
 ### Prerequisites
 
-- GCC compiler
+- GCC
 - Make
 
 ### Build Instructions
@@ -80,14 +79,16 @@ By default, **Meanie** outputs the calculated means in the following order:
 
 Each line of output corresponds to the means of the numbers on the respective input line, printed in the order specified above.
 
-## Command-Line Options (Planned)
+## Command-Line Options
 
-In future updates, **Meanie** will include command-line switches to specify:
+**Meanie** now supports command-line switches to specify which means to calculate. The available options are:
 
-- Which means to calculate (e.g., `--arithmetic`, `--geometric`, `--harmonic`)
-- Input and output file paths
-- Precision of the output
-- Help and version information
+- `-a`: Calculate the **arithmetic mean**
+- `-g`: Calculate the **geometric mean**
+- `-h`: Calculate the **harmonic mean**
+- `-w`: Calculate the **weighted arithmetic mean**
+
+**Note:** The order in which you specify the options determines the order of the output. If no options are provided, **Meanie** will calculate all available means in the default order
 
 ## Contributing
 
