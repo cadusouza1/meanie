@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     int opt;
     int i;
 
-    while ((opt = getopt(argc, argv, "aghw")) != -1) {
+    while ((opt = getopt(argc, argv, "mghwa")) != -1) {
         switch (opt) {
         case 'a':
             means[means_count++] = &arithmetic_mean;
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
         case 'w':
             means[means_count++] = &weighted_arithmetic_mean;
             break;
+        case 'm':
+            means[means_count++] = &median;
+            break;
         default:
             fprintf(stderr, "Unknown option: %c\n", opt);
             return 1;
@@ -48,6 +51,7 @@ int main(int argc, char *argv[]) {
         means[means_count++] = &geometric_mean;
         means[means_count++] = &harmonic_mean;
         means[means_count++] = &weighted_arithmetic_mean;
+        means[means_count++] = &median;
     }
 
     while ((line = read_line(stdin, LINE_CHUNK_SIZE))) {

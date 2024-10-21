@@ -1,6 +1,7 @@
 #include <math.h>
+#include <stdlib.h>
 
-#define MEANS_SIZE 4
+#define MEANS_SIZE 5
 
 typedef float (*MeanFunc)(float nums[], int len);
 
@@ -51,3 +52,23 @@ float weighted_arithmetic_mean(float nums_weight_pairs[], int len) {
 
     return weighted_sum / weight_sum;
 }
+
+int cmp_float(const void *f1, const void *f2) {
+    return *(float *)f1 >= *(float *)f2;
+}
+
+float median(float nums[], int len) {
+    qsort(nums, len, sizeof(float), &cmp_float);
+
+    if (len % 2 == 1) {
+        return nums[len / 2];
+    }
+
+    return (nums[len / 2] + nums[len / 2 - 1]) / 2;
+}
+
+/* float mode(float nums[], int len) { */
+/*     qsort(nums, len, sizeof(float), &cmp_float); */
+
+/*     return 0.0; */
+/* } */
