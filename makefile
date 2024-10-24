@@ -1,15 +1,29 @@
+CC=gcc
 TEST_FILE=test.txt
-BIN=meanie
+BIN=bin/meanie
 
 LIBS=-lm
+CFLAGS=-ansi -pedantic
 
-SRCS=$(wildcard *.c)
+SRCS=$(wildcard src/*.c)
+OBJS=$(patsubst src/%.c, obj/%.o, $(SRCS))
 
-$(BIN): $(SRCS)
-	gcc $(SRCS) $(LIBS) -o meanie
+build: $(BIN)
 
-run: $(BIN)
+run: $(build)
 	./$<
+
+$(BIN): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 test: $(BIN)
 	./$< < $(TEST_FILE)
+
+obj/%.o: src/%.c
+	$(CC) -c $^ $(CFLAGS) -o $@
+
+e: $(OBJS)
+	echo $^
+
+clean:
+	rm obj/* $(BIN)

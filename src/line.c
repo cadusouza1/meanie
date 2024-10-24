@@ -42,7 +42,8 @@ Line *read_line(FILE *stream, size_t chunk_size) {
                 break;
             }
 
-            // Checking the case where the realocated poiter is moved elsewhere
+            /* Checking the case where the realocated poiter is moved elsewhere
+             */
             if (realloc_line != line->content) {
                 line->content = realloc_line;
             }

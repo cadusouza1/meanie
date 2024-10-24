@@ -1,1 +1,3 @@
-meanie
+bin/meanie
+obj/
+test.txt
