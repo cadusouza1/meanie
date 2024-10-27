@@ -1,53 +1,54 @@
-CC=gcc
+# Compiler and flags
+CC = gcc
+CFLAGS = -std=c99 -pedantic -D_POSIX_C_SOURCE=200809L
+LIBS = -lm
+TEST_LIBS = $(LIBS) -lcriterion
 
-BIN_DIR=bin
-BIN=$(BIN_DIR)/meanie
+# Directory structure
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
+TEST_DIR = test
+TEST_BIN_DIR = $(TEST_DIR)/bin
 
-LIBS=-lm
-
-CFLAGS=-std=c99 -pedantic
-
-SRC_DIR=src
-SRCS=$(wildcard $(SRC_DIR)/*.c)
-HEADERS=$(wildcard $(SRC_DIR)/*.h)
-
-OBJ_DIR=obj
-OBJS=$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
-
-# Exclude main.o from OBJS when building tests
+# Files
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+HEADERS = $(wildcard $(SRC_DIR)/*.h)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 OBJS_NO_MAIN = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
-TEST_DIR=test
-TEST_SRCS=$(wildcard $(TEST_DIR)/*.c)
-TEST_BINS=$(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%, $(TEST_SRCS))
+# Test files
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
+TEST_BINS = $(patsubst $(TEST_DIR)/%.c, $(TEST_BIN_DIR)/%, $(TEST_SRCS))
+
+# Main binary
+BIN = $(BIN_DIR)/meanie
+
+# Ensure directories exist
+DIRS = $(BIN_DIR) $(OBJ_DIR) $(TEST_BIN_DIR)
+$(DIRS):
+	mkdir -p $@
+
+# Main targets
+.PHONY: all clean test build
+all: $(BIN)
 
 build: $(BIN)
 
-run: $(build)
-	./$<
-
-test: $(TESTS_BIN)
-
+# Compilation rules
 $(BIN): $(OBJS) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) -c $^ $(CFLAGS) -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TEST_DIR)/bin/%: $(OBJS_NO_MAIN) $(TEST_DIR)/%.c | $(TEST_DIR)/bin
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS) -lcriterion
+# Test compilation and execution
+$(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(OBJS_NO_MAIN) | $(TEST_BIN_DIR)
+	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
 
-test: $(TEST_DIR)/bin $(TEST_BINS)
-	for test in $(TEST_BINS); do ./$$test; done
+test: $(TEST_BINS)
+	@for test in $(TEST_BINS); do ./$$test; done
 
+# Cleanup
 clean:
-	rm obj/* $(BIN) $(TEST_BINS)
-
-$(OBJ_DIR):
-	mkdir -p $@
-
-$(BIN_DIR):
-	mkdir -p $@
-
-$(TEST_DIR)/bin:
-	mkdir -p $@
+	rm -rf $(DIRS)
