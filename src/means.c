@@ -1,5 +1,7 @@
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MEANS_SIZE 5
 
@@ -58,13 +60,28 @@ int cmp_double(const void *f1, const void *f2) {
 }
 
 double median(double nums[], int len) {
-    qsort(nums, len, sizeof(double), &cmp_double);
+    /* Since I don't want to change the original array, I need to create a copy
+    of it */
+    double *copy = malloc(len * sizeof(double));
+    double result;
 
-    if (len % 2 == 1) {
-        return nums[len / 2];
+    if (copy == NULL) {
+        fprintf(stderr, "Couldn't allocate memory for median calculation\n");
+        return 0.0;
     }
 
-    return (nums[len / 2] + nums[len / 2 - 1]) / 2;
+    memcpy(copy, nums, len * sizeof(double));
+    qsort(copy, len, sizeof(double), &cmp_double);
+
+    if (len % 2 == 1) {
+        result = copy[len / 2];
+    } else {
+        result = (copy[len / 2] + copy[len / 2 - 1]) / 2;
+    }
+
+    free(copy);
+
+    return result;
 }
 
 /* double mode(double nums[], int len) { */
