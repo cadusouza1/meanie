@@ -26,6 +26,9 @@ BIN = $(BIN_DIR)/meanie
 
 # Ensure directories exist
 DIRS = $(BIN_DIR) $(OBJ_DIR) $(TEST_BIN_DIR)
+
+default: build
+
 $(DIRS):
 	mkdir -p $@
 
@@ -47,7 +50,7 @@ $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(OBJS_NO_MAIN) | $(TEST_BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
 
 test: $(TEST_BINS)
-	@for test in $(TEST_BINS); do ./$$test; done
+	@for test in $(TEST_BINS); do ./$$test --verbose; done
 
 # Cleanup
 clean:

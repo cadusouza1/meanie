@@ -83,9 +83,3 @@ double median(double nums[], int len) {
 
     return result;
 }
-
-/* double mode(double nums[], int len) { */
-/*     qsort(nums, len, sizeof(double), &cmp_double); */
-
-/*     return 0.0; */
-/* } */
