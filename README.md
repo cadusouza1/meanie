@@ -14,16 +14,11 @@
   - Weighted Arithmetic Mean
   - Median
 
-### Upcoming Features
-- Support for more types of means (e.g., quadratic mean)
-- Command-line switches for customized calculations and output formatting
-
 ## Installation
 
 ### Prerequisites
 - GCC
 - Make
-- Math library (usually included with GCC)
 - Criterion (for running tests)
 
 ### Build Instructions
@@ -45,7 +40,7 @@ Then enter your numbers, for example:
 57 88 12 26 36 55 30 21 59 79
 67 86 28 18 56 48 26 51 21 19
 ```
-Press `Ctrl+D` (Unix/Linux) or `Ctrl+Z` followed by `Enter` (Windows) to signal the end of input.
+Press `Ctrl+D` to signal the end of input.
 
 Alternatively, you can feed the input via stdin:
 ```bash
