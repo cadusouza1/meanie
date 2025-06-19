@@ -12,10 +12,10 @@ double arithmetic_mean(double nums[], int len) {
     int i;
 
     for (i = 0; i < len; i++) {
-        sum += nums[i] / len;
+        sum += nums[i];
     }
 
-    return sum;
+    return sum / len;
 }
 
 double geometric_mean(double nums[], int len) {
@@ -23,10 +23,10 @@ double geometric_mean(double nums[], int len) {
     int i;
 
     for (i = 0; i < len; i++) {
-        prod *= pow(nums[i], 1.0 / len);
+        prod *= nums[i];
     }
 
-    return prod;
+    return pow(prod, 1.0 / len);
 }
 
 double harmonic_mean(double nums[], int len) {
