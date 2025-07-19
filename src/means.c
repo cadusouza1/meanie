@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MEANS_SIZE 5
+#define MEANS_SIZE 7
 
 typedef double (*MeanFunc)(double nums[], int len);
 
@@ -82,4 +82,19 @@ double median(double nums[], int len) {
     free(copy);
 
     return result;
+}
+
+double variance(double nums[], int len) {
+    double avg = arithmetic_mean(nums, len);
+    double v = 0;
+
+    for(int i = 0; i < len; i++) {
+        v += pow(nums[i] - avg, 2);
+    }
+
+    return v / (len - 1);
+}
+
+double standard_deviation(double nums[], int len) {
+    return sqrt(variance(nums, len));
 }

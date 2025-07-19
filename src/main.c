@@ -14,6 +14,8 @@
 #define HARMONIC_VALUE 3
 #define WEIGHTED_ARITHMETIC_VALUE 4
 #define MEDIAN_VALUE 5
+#define VARIANCE_VALUE 6
+#define STANDARD_DEVIATION_VALUE 7
 
 void show_help() {
     printf("Usage: meanie [OPTIONS]\n");
@@ -25,6 +27,8 @@ void show_help() {
     printf("  -h, --harmonic             Compute harmonic mean\n");
     printf("  -w, --weighted-arithmetic  Compute weighted arithmetic mean\n");
     printf("  -m, --median               Compute median\n");
+    printf("  -v, --variance             Compute variance\n");
+    printf("  -s, --standard-deviation   Compute standard deviation\n");
     printf("      --help                 Display this help message\n\n");
     printf("Input format: Numbers (or value-weight pairs for weighted mean) "
            "separated by spaces.\n");
@@ -54,9 +58,11 @@ int main(int argc, char *argv[]) {
         {"harmonic", 0, NULL, HARMONIC_VALUE},
         {"weighted-arithmetic", 0, NULL, WEIGHTED_ARITHMETIC_VALUE},
         {"median", 0, NULL, MEDIAN_VALUE},
+        {"variance", 0, NULL, VARIANCE_VALUE},
+        {"standard-deviation", 0, NULL, STANDARD_DEVIATION_VALUE},
     };
 
-    while ((opt = getopt_long(argc, argv, "mghwa", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "mghwavs", long_options, NULL)) != -1) {
         switch (opt) {
         case HELP_VALUE:
             show_help();
@@ -82,6 +88,14 @@ int main(int argc, char *argv[]) {
         case 'm':
             means[means_count++] = &median;
             break;
+        case VARIANCE_VALUE:
+        case 'v':
+            means[means_count++] = &variance;
+            break;
+        case STANDARD_DEVIATION_VALUE:
+        case 's':
+            means[means_count++] = &standard_deviation;
+            break;
         default:
             fprintf(stderr, "Unknown option: %c\n", opt);
             return 1;
@@ -95,6 +109,8 @@ int main(int argc, char *argv[]) {
         means[means_count++] = &harmonic_mean;
         means[means_count++] = &weighted_arithmetic_mean;
         means[means_count++] = &median;
+        means[means_count++] = &variance;
+        means[means_count++] = &standard_deviation;
     }
 
     while ((line = read_line(stdin, LINE_CHUNK_SIZE))) {
