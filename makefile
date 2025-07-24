@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -std=c99 -pedantic -D_POSIX_C_SOURCE=200809L
+CFLAGS = -std=c99 -pedantic
 LIBS = -lm
 TEST_LIBS = $(LIBS) -lcriterion
 
@@ -50,7 +50,7 @@ $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(OBJS_NO_MAIN) | $(TEST_BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
 
 test: $(TEST_BINS)
-	@for test in $(TEST_BINS); do ./$$test --verbose; done
+	@for test in $(TEST_BINS); do ./$$test;  done
 
 # Cleanup
 clean:

@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
     double parsed_num;
 
     int opt;
-    int i;
 
     const struct option long_options[] = {
         {"help", 0, NULL, HELP_VALUE},
@@ -62,7 +61,8 @@ int main(int argc, char *argv[]) {
         {"standard-deviation", 0, NULL, STANDARD_DEVIATION_VALUE},
     };
 
-    while ((opt = getopt_long(argc, argv, "mghwavs", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "mghwavs", long_options, NULL)) !=
+           -1) {
         switch (opt) {
         case HELP_VALUE:
             show_help();
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
             nums_len++;
         }
 
-        for (i = 0; i < means_count; i++) {
+        for (int i = 0; i < means_count; i++) {
             printf("%f ", means[i](nums, nums_len));
         }
 

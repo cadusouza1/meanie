@@ -9,9 +9,8 @@ typedef double (*MeanFunc)(double nums[], int len);
 
 double arithmetic_mean(double nums[], int len) {
     double sum = 0;
-    int i;
 
-    for (i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         sum += nums[i];
     }
 
@@ -20,9 +19,8 @@ double arithmetic_mean(double nums[], int len) {
 
 double geometric_mean(double nums[], int len) {
     double prod = 1;
-    int i;
 
-    for (i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         prod *= nums[i];
     }
 
@@ -31,9 +29,8 @@ double geometric_mean(double nums[], int len) {
 
 double harmonic_mean(double nums[], int len) {
     double inverse_sum = 0;
-    int i;
 
-    for (i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         inverse_sum += 1 / nums[i];
     }
 
@@ -45,9 +42,8 @@ Last value will be ignored if there is no weight associated. */
 double weighted_arithmetic_mean(double nums_weight_pairs[], int len) {
     double weighted_sum = 0;
     double weight_sum = 0;
-    int i;
 
-    for (i = 0; i < len - 1; i += 2) {
+    for (int i = 0; i < len - 1; i += 2) {
         weighted_sum += nums_weight_pairs[i] * nums_weight_pairs[i + 1];
         weight_sum += nums_weight_pairs[i + 1];
     }
@@ -88,7 +84,7 @@ double variance(double nums[], int len) {
     double avg = arithmetic_mean(nums, len);
     double v = 0;
 
-    for(int i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         v += pow(nums[i] - avg, 2);
     }
 

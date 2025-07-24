@@ -2,17 +2,10 @@
 *The means to an end*
 
 ## Introduction
-**Meanie** is a simple command-line tool written in C that computes common means (arithmetic, geometric, etc.) of numbers provided via standard input. It's a handy utility for quick statistical calculations directly from your terminal.
-
-**Note:** Future versions will support additional means and command-line switches to enhance user experience.
-
-## Features
-- Calculates common means:
-  - Arithmetic Mean
-  - Geometric Mean
-  - Harmonic Mean
-  - Weighted Arithmetic Mean
-  - Median
+**Meanie** is a simple command-line tool written in C that computes common
+means (arithmetic, geometric, etc.) of numbers provided via standard input.
+It's a handy utility for quick statistical calculations directly from your
+terminal.
 
 ## Installation
 
@@ -31,7 +24,7 @@ make
 This will compile the source code and produce an executable named `meanie`.
 
 ## Usage
-You can run **Meanie** by providing numbers via standard input. Each line of input should contain numbers separated by spaces.
+You can run `meanie` by providing numbers via stdin. Each line of input should contain numbers separated by spaces.
 ```bash
 bin/meanie
 ```
@@ -62,7 +55,9 @@ For weighted arithmetic mean, provide numbers in pairs (value weight):
 - `-w`: Calculate the **weighted arithmetic mean**
 - `-m`: Calculate the **median**
 
-**Note:** The order in which you specify the options determines the order of the output. If no options are provided, **Meanie** will calculate all available means in the default order.
+**Note:** The order in which you specify the options determines the order of
+the output. If no options are provided, `meanie` will calculate all available
+means in the default order.
 
 ## Development
 ### Running Tests
@@ -76,10 +71,7 @@ make clean
 ```
 
 ## Contributing
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions are welcome. Please feel free to submit issues or pull requests.
 
 ## Contact
 For questions or suggestions, please open an issue on the [GitHub repository](https://github.com/cadusouza1/meanie.git)
-
-## Acknowledgments
-- Inspired by the need for quick statistical calculations in command-line environments.
