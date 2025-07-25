@@ -16,6 +16,10 @@
 #define MEDIAN_VALUE 5
 #define VARIANCE_VALUE 6
 #define STANDARD_DEVIATION_VALUE 7
+#define INPUT_SEP_VALUE 8
+#define OUTPUT_SEP_VALUE 9
+#define INPUT_LINE_SEP_VALUE 10
+#define OUTPUT_LINE_SEP_VALUE 11
 
 void show_help() {
     printf("Usage: meanie [OPTIONS]\n");
@@ -29,6 +33,11 @@ void show_help() {
     printf("  -m, --median               Compute median\n");
     printf("  -v, --variance             Compute variance\n");
     printf("  -s, --standard-deviation   Compute standard deviation\n");
+    printf("      --sep                  Input value separator\n");
+    printf("      --input-sep            Input value separator\n");
+    printf("      --output-sep           Output value separator\n");
+    printf("      --input-line-sep       Input line separator\n");
+    printf("      --output-line-sep      Output line separator\n");
     printf("      --help                 Display this help message\n\n");
     printf("Input format: Numbers (or value-weight pairs for weighted mean) "
            "separated by spaces.\n");
@@ -39,6 +48,10 @@ void show_help() {
 
 int main(int argc, char *argv[]) {
     Line *line;
+    char *input_sep = " ";
+    char *input_line_sep = "\n";
+    char *output_sep = " ";
+    char *output_line_sep = "\n";
 
     MeanFunc means[MEANS_SIZE];
     int means_count = 0;
@@ -51,14 +64,19 @@ int main(int argc, char *argv[]) {
     int opt;
 
     const struct option long_options[] = {
-        {"help", 0, NULL, HELP_VALUE},
-        {"arithmetic", 0, NULL, ARITHMETIC_VALUE},
-        {"geometric", 0, NULL, GEOMETRIC_VALUE},
-        {"harmonic", 0, NULL, HARMONIC_VALUE},
-        {"weighted-arithmetic", 0, NULL, WEIGHTED_ARITHMETIC_VALUE},
-        {"median", 0, NULL, MEDIAN_VALUE},
-        {"variance", 0, NULL, VARIANCE_VALUE},
-        {"standard-deviation", 0, NULL, STANDARD_DEVIATION_VALUE},
+        {"help", no_argument, NULL, HELP_VALUE},
+        {"arithmetic", no_argument, NULL, ARITHMETIC_VALUE},
+        {"geometric", no_argument, NULL, GEOMETRIC_VALUE},
+        {"harmonic", no_argument, NULL, HARMONIC_VALUE},
+        {"weighted-arithmetic", no_argument, NULL, WEIGHTED_ARITHMETIC_VALUE},
+        {"median", no_argument, NULL, MEDIAN_VALUE},
+        {"variance", no_argument, NULL, VARIANCE_VALUE},
+        {"standard-deviation", no_argument, NULL, STANDARD_DEVIATION_VALUE},
+        {"sep", required_argument, NULL, INPUT_SEP_VALUE},
+        {"input-sep", required_argument, NULL, INPUT_SEP_VALUE},
+        {"output-sep", required_argument, NULL, OUTPUT_SEP_VALUE},
+        {"input-line-sep", required_argument, NULL, INPUT_LINE_SEP_VALUE},
+        {"output-line-sep", required_argument, NULL, OUTPUT_LINE_SEP_VALUE},
     };
 
     while ((opt = getopt_long(argc, argv, "mghwavs", long_options, NULL)) !=
@@ -96,6 +114,20 @@ int main(int argc, char *argv[]) {
         case 's':
             means[means_count++] = &standard_deviation;
             break;
+        case INPUT_SEP_VALUE:
+            input_sep = optarg;
+            break;
+        case OUTPUT_SEP_VALUE:
+            output_sep = optarg;
+            break;
+        case INPUT_LINE_SEP_VALUE:
+            input_line_sep = optarg;
+            break;
+        case OUTPUT_LINE_SEP_VALUE:
+            output_line_sep = optarg;
+            break;
+        case '?':
+            break;
         default:
             fprintf(stderr, "Unknown option: %c\n", opt);
             return 1;
@@ -119,8 +151,8 @@ int main(int argc, char *argv[]) {
         }
 
         nums_len = 0;
-        for (raw_num = strtok(line->content, " "); raw_num != NULL;
-             raw_num = strtok(NULL, " ")) {
+        for (raw_num = strtok(line->content, input_sep); raw_num != NULL;
+             raw_num = strtok(NULL, input_sep)) {
             parsed_num = strtod(raw_num, NULL);
 
             nums[nums_len] = parsed_num;
@@ -128,10 +160,10 @@ int main(int argc, char *argv[]) {
         }
 
         for (int i = 0; i < means_count; i++) {
-            printf("%f ", means[i](nums, nums_len));
+            printf("%f%s", means[i](nums, nums_len), output_sep);
         }
 
-        printf("\n");
+        printf("%s", output_line_sep);
         free(line);
     }
 
