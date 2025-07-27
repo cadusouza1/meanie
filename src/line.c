@@ -69,18 +69,20 @@ char *read_all(FILE *stream, size_t chunk_size) {
 
     if (buffer == NULL) {
         fprintf(stderr, "Couldn't allocate buffer to parse stream input");
+
+        return NULL;
     }
 
     char c;
     while ((c = fgetc(stream)) != EOF) {
         if (len >= cap) {
-            cap *= 1.5;
+            cap += chunk_size;
             void *realloc_buffer = realloc(buffer, cap * sizeof(char));
 
             if (realloc_buffer == NULL) {
                 fprintf(stderr, "Couldn't realocate buffer to parse stream "
                                 "input, returning now");
-                break;
+                return NULL;
             }
 
             /* Checking the case where the reallocated pointer is moved
@@ -94,6 +96,7 @@ char *read_all(FILE *stream, size_t chunk_size) {
         buffer[len++] = c;
     }
 
+    buffer[len] = '\0';
     return buffer;
 }
 
