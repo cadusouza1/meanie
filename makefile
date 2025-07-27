@@ -3,6 +3,7 @@ CC = gcc
 CFLAGS = -std=c99 -pedantic
 LIBS = -lm
 TEST_LIBS = $(LIBS) -lcriterion
+TEST_FLAGS = $(CFLAGS) -D_POSIX_C_SOURCE=200809L
 
 # Directory structure
 SRC_DIR = src
@@ -47,7 +48,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 # Test compilation and execution
 $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(OBJS_NO_MAIN) | $(TEST_BIN_DIR)
-	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
+	$(CC) $(TEST_FLAGS) $^ -o $@ $(TEST_LIBS)
 
 test: $(TEST_BINS)
 	@for test in $(TEST_BINS); do ./$$test;  done
