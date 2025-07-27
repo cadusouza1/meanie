@@ -43,7 +43,8 @@ Line *read_line(FILE *stream, size_t chunk_size) {
                 break;
             }
 
-            /* Checking the case where the realocated poiter is moved elsewhere
+            /* Checking the case where the reallocated pointer is moved
+             * elsewhere
              */
             if (realloc_line != line->content) {
                 line->content = realloc_line;
@@ -82,7 +83,8 @@ char *read_all(FILE *stream, size_t chunk_size) {
                 break;
             }
 
-            /* Checking the case where the realocated poiter is moved elsewhere
+            /* Checking the case where the reallocated pointer is moved
+             * elsewhere
              */
             if (realloc_buffer != buffer) {
                 buffer = realloc_buffer;
@@ -108,13 +110,30 @@ Splits *split_buffer_by_tokens(char *buffer, char *token) {
     splits->cap = 16;
 
     splits->splits = calloc(splits->cap, sizeof(char *));
+    if (splits->splits == NULL) {
+        fprintf(stderr, "Couldn't allocate memory for splits->splits");
+        return NULL;
+    }
 
     for (char *split = strtok(buffer, token); split != NULL;
          split = strtok(NULL, token)) {
         if (splits->len >= splits->cap) {
-            // splits->cap *= 1.5;
-        }
+            splits->cap *= 1.5;
 
+            void *realloc_split =
+                realloc(splits->splits, splits->cap * sizeof(char *));
+            if (realloc_split == NULL) {
+                fprintf(stderr, "Couldn't realocate splits->splits memory");
+                return splits;
+            }
+
+            /* Checking the case where the reallocated pointer is moved
+             * elsewhere
+             */
+            if (realloc_split != splits->splits) {
+                splits->splits = realloc_split;
+            }
+        }
         splits->splits[splits->len++] = split;
     }
 
