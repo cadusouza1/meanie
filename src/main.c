@@ -145,27 +145,36 @@ int main(int argc, char *argv[]) {
         means[means_count++] = &standard_deviation;
     }
 
-    while ((line = read_line(stdin, LINE_CHUNK_SIZE))) {
-        if (line->len == 0) {
-            break;
-        }
+    char *buffer = read_all(stdin, LINE_CHUNK_SIZE);
+    buffer = strtok(buffer, "\n"); // Removing possible last \n token
+
+    Splits *splits = split_buffer_by_tokens(buffer, input_line_sep);
+    int i, j;
+    for (i = 0; i < splits->len - 1; i++) {
 
         nums_len = 0;
-        for (raw_num = strtok(line->content, input_sep); raw_num != NULL;
+        for (raw_num = strtok(splits->splits[i], input_sep); raw_num != NULL;
              raw_num = strtok(NULL, input_sep)) {
-            parsed_num = strtod(raw_num, NULL);
-
-            nums[nums_len] = parsed_num;
-            nums_len++;
+            nums[nums_len++] = strtod(raw_num, NULL);
         }
 
-        for (int i = 0; i < means_count; i++) {
-            printf("%f%s", means[i](nums, nums_len), output_sep);
+        for (j = 0; j < means_count - 1; j++) {
+            printf("%f%s", means[j](nums, nums_len), output_sep);
         }
 
-        printf("%s", output_line_sep);
-        free(line);
+        printf("%f%s", means[j](nums, nums_len), output_line_sep);
     }
 
+    nums_len = 0;
+    for (raw_num = strtok(splits->splits[i], input_sep); raw_num != NULL;
+         raw_num = strtok(NULL, input_sep)) {
+        nums[nums_len++] = strtod(raw_num, NULL);
+    }
+
+    for (j = 0; j < means_count - 1; j++) {
+        printf("%f%s", means[j](nums, nums_len), output_sep);
+    }
+
+    printf("%f\n", means[j](nums, nums_len));
     return 0;
 }
