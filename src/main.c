@@ -7,6 +7,7 @@
 
 #define LINE_CHUNK_SIZE 128
 #define NUMS_MAX_LEN 1024
+#define SPLITS_BASE_CAP 16
 
 #define HELP_VALUE 0
 #define ARITHMETIC_VALUE 1
@@ -148,7 +149,8 @@ int main(int argc, char *argv[]) {
     char *buffer = read_all(stdin, LINE_CHUNK_SIZE);
     buffer = strtok(buffer, "\n"); // Removing possible last \n token
 
-    Splits *splits = split_buffer_by_tokens(buffer, input_line_sep);
+    Splits *splits =
+        split_buffer_by_tokens(buffer, input_line_sep, SPLITS_BASE_CAP);
     int i, j;
     for (i = 0; i < splits->len - 1; i++) {
 

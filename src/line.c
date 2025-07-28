@@ -107,10 +107,10 @@ struct Splits {
     char **splits;
 };
 
-Splits *split_buffer_by_tokens(char *buffer, char *token) {
+Splits *split_buffer_by_tokens(char *buffer, char *token, size_t base_cap) {
     Splits *splits = malloc(sizeof(Splits));
     splits->len = 0;
-    splits->cap = 16;
+    splits->cap = base_cap;
 
     splits->splits = calloc(splits->cap, sizeof(char *));
     if (splits->splits == NULL) {
@@ -121,7 +121,7 @@ Splits *split_buffer_by_tokens(char *buffer, char *token) {
     for (char *split = strtok(buffer, token); split != NULL;
          split = strtok(NULL, token)) {
         if (splits->len >= splits->cap) {
-            splits->cap *= 1.5;
+            splits->cap += base_cap;
 
             void *realloc_split =
                 realloc(splits->splits, splits->cap * sizeof(char *));
