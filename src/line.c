@@ -10,7 +10,6 @@ typedef struct {
 } Line;
 
 Line *read_line(FILE *stream, size_t chunk_size) {
-    char c;
     size_t i = 0;
     char *realloc_line = NULL;
     Line *line = malloc(sizeof(Line));
@@ -28,6 +27,7 @@ Line *read_line(FILE *stream, size_t chunk_size) {
     line->len = 0;
     line->cap = chunk_size;
 
+    int c;
     while ((c = fgetc(stream)) != EOF) {
         if (c == '\n') {
             break;
@@ -53,7 +53,7 @@ Line *read_line(FILE *stream, size_t chunk_size) {
             line->cap += chunk_size;
         }
 
-        line->content[i] = c;
+        line->content[i] = (char)c;
         i++;
     }
 
@@ -73,7 +73,7 @@ char *read_all(FILE *stream, size_t chunk_size) {
         return NULL;
     }
 
-    char c;
+    int c;
     while ((c = fgetc(stream)) != EOF) {
         if (len >= cap) {
             cap += chunk_size;
@@ -93,7 +93,7 @@ char *read_all(FILE *stream, size_t chunk_size) {
             }
         }
 
-        buffer[len++] = c;
+        buffer[len++] = (char)c;
     }
 
     buffer[len] = '\0';
