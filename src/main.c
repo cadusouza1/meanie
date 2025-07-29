@@ -178,5 +178,9 @@ int main(int argc, char *argv[]) {
     }
 
     printf("%f\n", means[j](nums, nums_len));
+
+    free(splits->splits);
+    free(splits);
+    free(buffer);
     return 0;
 }
