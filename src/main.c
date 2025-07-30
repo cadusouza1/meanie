@@ -147,10 +147,10 @@ int main(int argc, char *argv[]) {
     }
 
     char *buffer = read_all(stdin, LINE_CHUNK_SIZE);
-    buffer = strtok(buffer, "\n"); // Removing possible last \n token
 
     Splits *splits =
         split_buffer_by_tokens(buffer, input_line_sep, SPLITS_BASE_CAP);
+
     int i, j;
     for (i = 0; i < splits->len - 1; i++) {
 

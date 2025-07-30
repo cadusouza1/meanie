@@ -1,4 +1,7 @@
 #include <criterion/criterion.h>
+#include <criterion/internal/assert.h>
+#include <criterion/internal/test.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "../src/line.h"
@@ -11,6 +14,18 @@ Test(read_all, empty_stream) {
 
     cr_assert_not_null(buff);
     cr_assert_str_eq(buff, "");
+
+    fclose(f);
+}
+
+Test(read_all, basic_newline_stream) {
+    char *input = "1 2 3\n4 5 6";
+    FILE *f = fmemopen(input, strlen(input), "r");
+
+    char *buff = read_all(f, 1);
+
+    cr_assert_not_null(buff);
+    cr_assert_str_eq(buff, input);
 
     fclose(f);
 }
