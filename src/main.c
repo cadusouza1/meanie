@@ -21,25 +21,33 @@
 #define OUTPUT_SEP_VALUE 9
 #define INPUT_LINE_SEP_VALUE 10
 #define OUTPUT_LINE_SEP_VALUE 11
+#define QUARTILE1_VALUE 12
+#define QUARTILE2_VALUE 13
+#define QUARTILE3_VALUE 14
+#define IQR_VALUE 15
 
 void show_help() {
     printf("Usage: meanie [OPTIONS]\n");
     printf("Calculate statistical means from input data. By default, all means "
            "are computed.\n\n");
     printf("Options:\n");
-    printf("  -a, --arithmetic           Compute arithmetic mean\n");
-    printf("  -g, --geometric            Compute geometric mean\n");
-    printf("  -h, --harmonic             Compute harmonic mean\n");
-    printf("  -w, --weighted-arithmetic  Compute weighted arithmetic mean\n");
-    printf("  -m, --median               Compute median\n");
-    printf("  -v, --variance             Compute variance\n");
-    printf("  -s, --standard-deviation   Compute standard deviation\n");
-    printf("      --sep                  Input value separator\n");
-    printf("      --input-sep            Input value separator\n");
-    printf("      --output-sep           Output value separator\n");
-    printf("      --input-line-sep       Input line separator\n");
-    printf("      --output-line-sep      Output line separator\n");
-    printf("      --help                 Display this help message\n\n");
+    printf("  -a,    --arithmetic          Compute arithmetic mean\n");
+    printf("  -g,    --geometric           Compute geometric mean\n");
+    printf("  -h,    --harmonic            Compute harmonic mean\n");
+    printf("  -w,    --weighted-arithmetic Compute weighted arithmetic mean\n");
+    printf("  -m,    --median              Compute median\n");
+    printf("  -v,    --variance            Compute variance\n");
+    printf("  -s,    --standard-deviation  Compute standard deviation\n");
+    printf("  --q1,  --quartile1           Compute first quartile\n");
+    printf("  --q2,  --quartile2           Compute second quartile\n");
+    printf("  --q3,  --quartile3           Compute third quartile\n");
+    printf("  --iqr, --interquartile-range Compute the interquartile range \n");
+    printf("         --sep                 Input value separator\n");
+    printf("         --input-sep           Input value separator\n");
+    printf("         --output-sep          Output value separator\n");
+    printf("         --input-line-sep      Input line separator\n");
+    printf("         --output-line-sep     Output line separator\n");
+    printf("         --help                Display this help message\n\n");
     printf("Input format: Numbers (or value-weight pairs for weighted mean) "
            "separated by spaces.\n");
     printf("Example:\n");
@@ -73,6 +81,14 @@ int main(int argc, char *argv[]) {
         {"median", no_argument, NULL, MEDIAN_VALUE},
         {"variance", no_argument, NULL, VARIANCE_VALUE},
         {"standard-deviation", no_argument, NULL, STANDARD_DEVIATION_VALUE},
+        {"q1", no_argument, NULL, QUARTILE1_VALUE},
+        {"q2", no_argument, NULL, QUARTILE2_VALUE},
+        {"q3", no_argument, NULL, QUARTILE3_VALUE},
+        {"iqr", no_argument, NULL, IQR_VALUE},
+        {"quartile1", no_argument, NULL, QUARTILE1_VALUE},
+        {"quartile2", no_argument, NULL, QUARTILE2_VALUE},
+        {"quartile3", no_argument, NULL, QUARTILE3_VALUE},
+        {"interquartile-range", no_argument, NULL, IQR_VALUE},
         {"sep", required_argument, NULL, INPUT_SEP_VALUE},
         {"input-sep", required_argument, NULL, INPUT_SEP_VALUE},
         {"output-sep", required_argument, NULL, OUTPUT_SEP_VALUE},
@@ -127,6 +143,18 @@ int main(int argc, char *argv[]) {
         case OUTPUT_LINE_SEP_VALUE:
             output_line_sep = optarg;
             break;
+        case QUARTILE1_VALUE:
+            means[means_count++] = &quartile1;
+            break;
+        case QUARTILE2_VALUE:
+            means[means_count++] = &quartile2;
+            break;
+        case QUARTILE3_VALUE:
+            means[means_count++] = &quartile3;
+            break;
+        case IQR_VALUE:
+            means[means_count++] = &iqr;
+            break;
         case '?':
             break;
         default:
@@ -144,6 +172,10 @@ int main(int argc, char *argv[]) {
         means[means_count++] = &median;
         means[means_count++] = &variance;
         means[means_count++] = &standard_deviation;
+        means[means_count++] = &quartile1;
+        means[means_count++] = &quartile2;
+        means[means_count++] = &quartile3;
+        means[means_count++] = &iqr;
     }
 
     char *buffer = read_all(stdin, LINE_CHUNK_SIZE);

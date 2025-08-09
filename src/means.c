@@ -1,9 +1,9 @@
+#include "sort.h"
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MEANS_SIZE 7
+#define MEANS_SIZE 11
 
 typedef double (*MeanFunc)(double nums[], int len);
 
@@ -51,23 +51,13 @@ double weighted_arithmetic_mean(double nums_weight_pairs[], int len) {
     return weighted_sum / weight_sum;
 }
 
-int cmp_double(const void *f1, const void *f2) {
-    return *(double *)f1 >= *(double *)f2;
-}
-
 double median(double nums[], int len) {
-    /* Since I don't want to change the original array, I need to create a copy
-    of it */
-    double *copy = malloc(len * sizeof(double));
     double result;
+    double *copy = qsort_double_array(nums, len);
 
     if (copy == NULL) {
-        fprintf(stderr, "Couldn't allocate memory for median calculation\n");
-        return 0.0;
+        return 0;
     }
-
-    memcpy(copy, nums, len * sizeof(double));
-    qsort(copy, len, sizeof(double), &cmp_double);
 
     if (len % 2 == 1) {
         result = copy[len / 2];
@@ -93,4 +83,20 @@ double variance(double nums[], int len) {
 
 double standard_deviation(double nums[], int len) {
     return sqrt(variance(nums, len));
+}
+
+double quartile1(double nums[], int len) { return median(nums, len / 2); }
+
+double quartile2(double nums[], int len) { return median(nums, len); }
+
+double quartile3(double nums[], int len) {
+    if (len % 2 == 0) {
+        return median(nums + (len / 2), len / 2);
+    }
+
+    return median(nums + (len / 2 + 1), len / 2);
+}
+
+double iqr(double nums[], int len) {
+    return quartile3(nums, len) - quartile1(nums, len);
 }
